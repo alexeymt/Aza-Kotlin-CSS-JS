@@ -4,7 +4,6 @@ package azadev.kotlin.css.colors
 
 import azadev.kotlin.compat.Integer
 import azadev.kotlin.css.cssDecimalFormat
-import kotlin.js.Math
 
 
 class Color(
@@ -56,8 +55,8 @@ class Color(
 
 
 	fun toHSL(): HSLValues {
-		val max = Math.max(Math.max(red, green), blue)
-		val min = Math.min(Math.min(red, green), blue)
+		val max = maxOf(maxOf(red, green), blue)
+		val min = minOf(minOf(red, green), blue)
 		val avg = (max + min) / 2
 		val hsl = HSLValues(avg, avg, avg)
 

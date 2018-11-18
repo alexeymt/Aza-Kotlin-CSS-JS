@@ -1,10 +1,37 @@
 package azadev.kotlin.css.test
 
-import azadev.kotlin.css.*
-import azadev.kotlin.css.colors.*
-import azadev.kotlin.css.dimens.*
-import org.junit.*
-import org.junit.Assert.*
+import azadev.kotlin.css.AUTO
+import azadev.kotlin.css.BOLD
+import azadev.kotlin.css.EVEN
+import azadev.kotlin.css.Stylesheet
+import azadev.kotlin.css.background
+import azadev.kotlin.css.color
+import azadev.kotlin.css.colors.hex
+import azadev.kotlin.css.colors.rgb
+import azadev.kotlin.css.colors.rgba
+import azadev.kotlin.css.contains
+import azadev.kotlin.css.content
+import azadev.kotlin.css.dimens.box
+import azadev.kotlin.css.dimens.em
+import azadev.kotlin.css.dimens.ex
+import azadev.kotlin.css.dimens.inch
+import azadev.kotlin.css.dimens.percent
+import azadev.kotlin.css.dimens.px
+import azadev.kotlin.css.equals
+import azadev.kotlin.css.fontFamily
+import azadev.kotlin.css.fontSize
+import azadev.kotlin.css.fontWeight
+import azadev.kotlin.css.height
+import azadev.kotlin.css.lineHeight
+import azadev.kotlin.css.opacity
+import azadev.kotlin.css.padding
+import azadev.kotlin.css.src
+import azadev.kotlin.css.startsWith
+import azadev.kotlin.css.top
+import azadev.kotlin.css.url
+import azadev.kotlin.css.width
+import kotlin.test.Test
+import kotlin.test.assertEquals
 
 
 // CSS Selectors:
@@ -54,8 +81,8 @@ class RenderTest : ATest
 		})
 		testRender("a:hover,div{width:1}a+span,div{width:1}a+span~a,div{width:1}", {
 			a.hover and div { width = 1 }
-			a % span and div { width = 1 }
-			a % span - a and div { width = 1 }
+			a.next.span and div { width = 1 }
+			a.next.span - a and div { width = 1 }
 		})
 		testRender("div>a,div>span{width:1}div>a:hover,div>span:hover{width:1}div>a:hover,div>span:hover{width:1}", {
 			div / (a and span) { width = 1 }
@@ -92,7 +119,7 @@ class RenderTest : ATest
 
 		testRender("div+a{width:1}span+a{width:1}div+a{width:1}span+a{width:1}", {
 			div.next.a { width = 1 }
-			span % a { width = 1 }
+			span.next.a { width = 1 }
 			(div and span) {
 				next.a { width = 1 }
 			}
@@ -114,7 +141,7 @@ class RenderTest : ATest
 		})
 		testRender("div>a+span:hover{width:1}", {
 			div.child {
-				a % span.hover { width = 1 }
+				a.next.span.hover { width = 1 }
 			}
 		})
 	}
@@ -142,7 +169,7 @@ class RenderTest : ATest
 			".class1" / a { width = 1 }
 		}
 		testRender(".class1+a{width:1}") {
-			".class1" % a { width = 1 }
+			".class1" + a { width = 1 }
 		}
 		testRender(".class1~a{width:1}") {
 			".class1" - a { width = 1 }
@@ -188,7 +215,7 @@ class RenderTest : ATest
 		}
 		testRender(".class1 .class2~span{top:0}#id1+.class2 span>.class3{top:1}") {
 			".class1"..".class2" - span { top = 0 }
-			"#id1" % ".class2"..span / ".class3" { top = 1 }
+			"#id1" + ".class2"..span / ".class3" { top = 1 }
 		}
 		testRender(".class1,.class2,.class3{top:0}") {
 			".class1" and ".class2" and ".class3" { top = 0 }

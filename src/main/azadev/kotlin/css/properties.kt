@@ -279,3 +279,6 @@ var Stylesheet.marqueeStyle by PropertyHandler("marquee-style")
 // Exotic
 var Stylesheet.zoom by PropertyHandler("zoom")
 var Stylesheet.src by PropertyHandler("src") // @font-face
+
+// Other
+var Stylesheet.important by PropertyHandler("important")

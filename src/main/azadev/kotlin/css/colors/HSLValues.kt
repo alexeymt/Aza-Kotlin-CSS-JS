@@ -1,7 +1,5 @@
 package azadev.kotlin.css.colors
 
-import kotlin.js.Math
-
 
 class HSLValues(
 		var hue: Float,
@@ -9,12 +7,12 @@ class HSLValues(
 		var lightness: Float
 ) {
 	fun setLightnessSafe(l: Float): HSLValues {
-		lightness = Math.min(1f, Math.max(0f, l))
+		lightness = minOf(1f, maxOf(0f, l))
 		return this
 	}
 
 	fun setSaturationSafe(l: Float): HSLValues {
-		saturation = Math.min(1f, Math.max(0f, l))
+		saturation = minOf(1f, maxOf(0f, l))
 		return this
 	}
 }

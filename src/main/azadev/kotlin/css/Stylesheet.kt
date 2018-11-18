@@ -42,10 +42,9 @@ class Stylesheet(
 
 	fun getProperty(name: String) = properties.find { it.name == name }
 
-	fun setProperty(name: String, value: Any?) {
-		properties.add(Property(name, value))
+	fun setProperty(name: String, value: Any?, important: Boolean = false) {
+		properties.add(Property(name, value, important))
 	}
-
 
 	fun moveDataTo(stylesheet: Stylesheet) {
 		stylesheet.properties.addAll(properties)
@@ -63,10 +62,8 @@ class Stylesheet(
 		val selector = selector
 		val atRule = atRule
 
-
 		if (atRule != null)
 			sb.append(atRule).append('{')
-
 
 		if (properties.isNotEmpty()) {
 			val selectorStr = selector?.toString(selectorPrefix, _spaceBefore)
@@ -77,16 +74,13 @@ class Stylesheet(
 
 			val lastIdx = properties.lastIndex
 			properties.forEachIndexed { i, property ->
-				val value = property.value
-				if (value != null)
-					sb.run {
-						append(property.name)
-						append(":")
-						append(if (value is Number) cssDecimalFormat.format(value.toFloat()) else value)
-
-						if (i < lastIdx)
-							append(";")
-					}
+				val renderedProperty = property.render()
+				if (renderedProperty != null) {
+                    sb.append(renderedProperty)
+                    if (i < lastIdx) {
+                        sb.append(";")
+                    }
+                }
 				else if (i == lastIdx && sb.last() == ';')
 					sb.length--
 			}
@@ -94,7 +88,6 @@ class Stylesheet(
 			if (hasSelector)
 				sb.append("}")
 		}
-
 
 		for (child in children) {
 			val rows = selector?.rows
@@ -104,22 +97,25 @@ class Stylesheet(
 				child.render(sb, selectorPrefix)
 		}
 
-
 		if (atRule != null)
 			sb.append('}')
 	}
 
-
-	override fun toString() = "Stylesheet(sel:$selector; props:${properties.size}; childs:${children.size})"
-
+	override fun toString() = "Stylesheet(sel:$selector; props:${properties.size}; children:${children.size})"
 
 	class Property(
 			val name: String,
-			val value: Any?
+			val value: Any?,
+			val important:Boolean
 	) {
 		override fun toString() = "$name:$value"
-	}
 
+        fun render():String? {
+            val renderedValue = if (value is Number) cssDecimalFormat.format(value.toFloat()) else value
+            val renderedImportance = if (important) " !important" else ""
+            return if (value != null) "$name:$renderedValue$renderedImportance" else null
+        }
+	}
 
 	//
 	// AT-RULES
@@ -197,7 +193,7 @@ class Stylesheet(
 	val CharSequence.next: Selector get() = custom("+", false, false)
 	val CharSequence.nextAll: Selector get() = custom("~", false, false)
 	operator fun CharSequence.div(obj: CharSequence) = child.append(obj.toSelector())
-	operator fun CharSequence.mod(obj: CharSequence) = next.append(obj.toSelector())
+	operator fun CharSequence.plus(obj: CharSequence) = next.append(obj.toSelector())
 	operator fun CharSequence.minus(obj: CharSequence) = nextAll.append(obj.toSelector())
 	operator fun CharSequence.rangeTo(obj: CharSequence) = children.append(obj.toSelector())
 

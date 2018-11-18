@@ -1,7 +1,5 @@
 package azadev.kotlin.compat
 
-import kotlin.js.Math
-
 object Integer {
     val SIZE = 32
 
@@ -15,7 +13,7 @@ object Integer {
     private fun toUnsignedString0(`val`: Int, shift: Int): String {
         // assert shift > 0 && shift <=5 : "Illegal shift value";
         val mag = SIZE - numberOfLeadingZeros(`val`)
-        val chars = Math.max((mag + (shift - 1)) / shift, 1)
+        val chars = maxOf((mag + (shift - 1)) / shift, 1)
         val buf = CharArray(chars)
 
         formatUnsignedInt(`val`, shift, buf, 0, chars)
@@ -24,8 +22,8 @@ object Integer {
         return buf.joinToString(separator = "")
     }
 
-    fun numberOfLeadingZeros(i: Int): Int {
-        var i = i
+    fun numberOfLeadingZeros(num: Int): Int {
+        var i = num
         // HD, Figure 5-6
         if (i == 0)
             return 32
@@ -65,14 +63,14 @@ object Integer {
      * @return the lowest character  location used
      */
     internal fun formatUnsignedInt(`val`: Int, shift: Int, buf: CharArray, offset: Int, len: Int): Int {
-        var `val` = `val`
+        var value = `val`
         var charPos = len
         val radix = 1 shl shift
         val mask = radix - 1
         do {
-            buf[offset + --charPos] = digits[`val` and mask]
-            `val` = `val` ushr shift
-        } while (`val` != 0 && charPos > 0)
+            buf[offset + --charPos] = digits[value and mask]
+            value = value ushr shift
+        } while (value != 0 && charPos > 0)
 
         return charPos
     }

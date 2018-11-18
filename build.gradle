@@ -1,17 +1,23 @@
-group 'xyz.nulldev'
-version library_version
-
 buildscript {
 	repositories {
 		mavenCentral()
 		jcenter()
+        maven { url "https://kotlin.bintray.com/kotlinx" }
 	}
 	dependencies {
 		classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.+'
+        classpath("io.spring.gradle:dependency-management-plugin:1.0.6.RELEASE")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version")
 	}
 }
 
 apply plugin: 'kotlin2js'
+apply plugin: 'com.jfrog.bintray'
+apply plugin: "maven"
+
+group 'pw.octopus'
+version library_version
 
 repositories {
 	mavenCentral()
@@ -26,34 +32,17 @@ sourceSets {
 dependencies {
 	compile "org.jetbrains.kotlin:kotlin-stdlib-js:$kotlin_version"
 
-	testCompile "junit:junit:$junit_version"
+	testCompile "org.jetbrains.kotlin:kotlin-test-js"
 }
 
 compileKotlin2Js {
 	kotlinOptions {
-		moduleKind = "umd"
+		moduleKind = "amd"
 	}
 }
 
 // PUBLISHING
 
-apply plugin: 'maven-publish'
-
 task sourceJar(type: Jar) {
 	from sourceSets.main.allSource
-}
-
-publishing {
-	publications {
-		MyPublication(MavenPublication) {
-			from components.java
-			groupId 'xyz.nulldev'
-			artifactId 'aza-kotlin-css-js'
-			version library_version
-
-			artifact sourceJar {
-				classifier "sources"
-			}
-		}
-	}
 }

@@ -5,6 +5,7 @@ package azadev.kotlin.css.dimens
 
 val Number.px: LinearDimension get() = dimen(this, LinearUnits.PX)
 val Number.em: LinearDimension get() = dimen(this, LinearUnits.EM)
+val Number.rem: LinearDimension get() = dimen(this, LinearUnits.REM)
 val Number.percent: LinearDimension get() = dimen(this, LinearUnits.PERCENT)
 val Number.ex: LinearDimension get() = dimen(this, LinearUnits.EX)
 val Number.inch: LinearDimension get() = dimen(this, LinearUnits.INCH)

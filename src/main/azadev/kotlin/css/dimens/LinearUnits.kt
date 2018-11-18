@@ -7,6 +7,7 @@ enum class LinearUnits(
 	// Relative units
 	PX("px"),
 	EM("em"),
+	REM("rem"),
 	PERCENT("%"),
 	EX("ex"), // The height of 'x' char
 

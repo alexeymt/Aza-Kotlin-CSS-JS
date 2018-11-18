@@ -10,7 +10,7 @@ class LinearDimension(
 		var units: LinearUnits
 ) {
 	override fun toString(): String {
-		val str = cssDecimalFormat.format(value)!!
+		val str = cssDecimalFormat.format(value)
 		return if (str == "0") str else "$str$units"
 	}
 
@@ -33,6 +33,7 @@ class LinearDimension(
 			val units = when {
 				s.endsWith("px")    -> LinearUnits.PX
 				s.endsWith("em")    -> LinearUnits.EM
+				s.endsWith("rem")    -> LinearUnits.REM
 				s.endsWith("ex")    -> LinearUnits.EX
 
 				s.endsWith("in")    -> LinearUnits.INCH

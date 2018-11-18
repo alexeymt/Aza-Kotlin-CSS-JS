@@ -1,7 +1,7 @@
 package azadev.kotlin.compat
 
 public class StringBuilderCompat(content: String = "") : Appendable, CharSequence {
-    constructor(capacity: Int) : this() {}
+    @Suppress("UNUSED_PARAMETER") constructor(capacity: Int) : this() {}
 
     constructor(content: CharSequence) : this(content.toString()) {}
 
@@ -15,7 +15,7 @@ public class StringBuilderCompat(content: String = "") : Appendable, CharSequenc
 
     override fun get(index: Int): Char = string[index]
 
-    override fun subSequence(start: Int, end: Int): CharSequence = string.substring(start, end)
+    override fun subSequence(startIndex: Int, endIndex: Int): CharSequence = string.substring(startIndex, endIndex)
 
     override fun append(c: Char): StringBuilderCompat {
         string += c

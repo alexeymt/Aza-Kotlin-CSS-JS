@@ -1,7 +1,14 @@
 package azadev.kotlin.css.test
 
-import azadev.kotlin.css.*
-import org.junit.*
+import azadev.kotlin.css.Stylesheet
+import azadev.kotlin.css.clear
+import azadev.kotlin.css.color
+import azadev.kotlin.css.content
+import azadev.kotlin.css.display
+import azadev.kotlin.css.margin
+import azadev.kotlin.css.stylesheet
+import azadev.kotlin.css.zoom
+import kotlin.test.Test
 
 
 class IncludeTest : ATest
